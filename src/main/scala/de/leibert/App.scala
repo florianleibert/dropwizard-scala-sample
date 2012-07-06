@@ -13,6 +13,7 @@ object App extends ScalaService[ExampleConfiguration]("example") {
     environment.addResource(new ExampleResource(configuration.defaultName, configuration.template))
   }
 }
+
 class ExampleConfiguration extends Configuration {
   @NotEmpty
   @JsonProperty
@@ -23,7 +24,7 @@ class ExampleConfiguration extends Configuration {
   val template: String = "Hello %s"
 }
 
-@Path ("/hello-world")
+@Path("/hello-world")
 @Produces(Array("application/json"))
 class ExampleResource(val defaultName: String, val template: String) {
   val counter = new AtomicLong(0)
