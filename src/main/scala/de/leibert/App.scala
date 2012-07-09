@@ -7,11 +7,13 @@ import java.util.concurrent.atomic.AtomicLong
 import javax.ws.rs.{Path, Produces, GET, QueryParam}
 import com.yammer.metrics.annotation.Timed
 import org.hibernate.validator.constraints.NotEmpty
+import com.sun.jersey.spi.container.servlet.ServletContainer
 
-object App extends ScalaService[ExampleConfiguration]("example") {
+object App extends ScalaService[ExampleConfiguration]("example2") {
   def initialize(configuration: ExampleConfiguration, environment: Environment) {
     environment.addResource(new ExampleResource(configuration.defaultName, configuration.template))
   }
+
 }
 
 class ExampleConfiguration extends Configuration {
@@ -19,7 +21,7 @@ class ExampleConfiguration extends Configuration {
   @JsonProperty
   val defaultName: String = "Hans"
 
-  @org.hibernate.validator.constraints.NotEmpty
+  @NotEmpty
   @JsonProperty
   val template: String = "Hello %s"
 }
@@ -35,5 +37,4 @@ class ExampleResource(val defaultName: String, val template: String) {
     counter.incrementAndGet()
     return String.format(template, name.getOrElse(defaultName))
   }
-
 }
